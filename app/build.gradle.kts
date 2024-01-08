@@ -105,7 +105,7 @@ android {
         targetSdk = Versions.targetSdk
 
         buildConfigField("String", "VERSION", "\"$version\"")
-        buildConfigField("String", "BUILDVERSION", "\"${generateGitBuild()}-${generateDate()}\"")
+        buildConfigField("String", "BUILDVERSION", "\"${generateGitBuild()}-${generateDate()}-nobomb\"")
         buildConfigField("String", "REMOTE", "\"${generateGitRemote()}\"")
         buildConfigField("String", "HEAD", "\"${generateGitBuild()}\"")
         buildConfigField("String", "COMMITTED", "\"${allCommitted()}\"")

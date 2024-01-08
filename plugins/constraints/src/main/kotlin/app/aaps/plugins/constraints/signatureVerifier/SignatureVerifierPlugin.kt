@@ -58,7 +58,6 @@ class SignatureVerifierPlugin @Inject constructor(
 
     private var handler = Handler(HandlerThread(this::class.simpleName + "Handler").also { it.start() }.looper)
 
-    private val REVOKED_CERTS_URL = "https://raw.githubusercontent.com/nightscout/AndroidAPS/master/app/src/main/assets/revoked_certs.txt"
     private val UPDATE_INTERVAL = TimeUnit.DAYS.toMillis(1)
 
     private val lock: Any = arrayOfNulls<Any>(0)
@@ -107,29 +106,6 @@ class SignatureVerifierPlugin @Inject constructor(
     }
 
     private fun hasIllegalSignature(): Boolean {
-        try {
-            synchronized(lock) {
-                if (revokedCerts == null) return false
-                // TODO Change after raising min API to 28
-                @Suppress("DEPRECATION", "PackageManagerGetSignatures")
-                val signatures = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES).signatures
-                if (signatures != null) {
-                    for (signature in signatures) {
-                        val digest = MessageDigest.getInstance("SHA256")
-                        val fingerprint = digest.digest(signature.toByteArray())
-                        for (cert in revokedCerts!!) {
-                            if (Arrays.equals(cert, fingerprint)) {
-                                return true
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (e: PackageManager.NameNotFoundException) {
-            aapsLogger.error("Error in SignatureVerifierPlugin", e)
-        } catch (e: NoSuchAlgorithmException) {
-            aapsLogger.error("Error in SignatureVerifierPlugin", e)
-        }
         return false
     }
 
@@ -197,8 +173,7 @@ class SignatureVerifierPlugin @Inject constructor(
     }
 
     @Throws(IOException::class) private fun downloadRevokedCerts(): String {
-        val connection = URL(REVOKED_CERTS_URL).openConnection()
-        return readInputStream(connection.getInputStream())
+        return ''
     }
 
     @Throws(IOException::class)

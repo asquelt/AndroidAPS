@@ -47,60 +47,6 @@ class VersionCheckerUtilsImpl @Inject constructor(
     }
 
     private fun checkVersion() =
-        if (isConnected()) {
-            Thread {
-                try {
-                    val definition: String = URL("https://raw.githubusercontent.com/nightscout/AndroidAPS/versions/definition.json").readText()
-                    val version: String? = AllowedVersions().findByApi(definition, Build.VERSION.SDK_INT)?.optString("supported")
-                    compareWithCurrentVersion(version, config.get().VERSION_NAME)
-
-                    // App expiration
-                    var endDate = sp.getLong(rh.gs(app.aaps.core.utils.R.string.key_app_expiration) + "_" + config.get().VERSION_NAME, 0)
-                    AllowedVersions().findByVersion(definition, config.get().VERSION_NAME)?.let { expirationJson ->
-                        AllowedVersions().endDateToMilliseconds(expirationJson.getString("endDate"))?.let { ed ->
-                            endDate = ed + T.days(1).msecs()
-                            sp.putLong(rh.gs(app.aaps.core.utils.R.string.key_app_expiration) + "_" + config.get().VERSION_NAME, endDate)
-                        }
-                    }
-                    if (endDate != 0L) onExpireDateDetected(config.get().VERSION_NAME, dateUtil.dateString(endDate))
-
-                } catch (e: IOException) {
-                    aapsLogger.error(LTag.CORE, "Github master version check error: $e")
-                }
-            }.start()
-        } else
-            aapsLogger.debug(LTag.CORE, "Github master version not checked. No connectivity")
-
-    @Suppress("SameParameterValue")
-    override fun compareWithCurrentVersion(newVersion: String?, currentVersion: String) {
-
-        val newVersionElements = newVersion.toNumberList()
-        val currentVersionElements = currentVersion.toNumberList()
-
-        aapsLogger.debug(LTag.CORE, "Compare versions: $currentVersion $currentVersionElements, $newVersion $newVersionElements")
-        if (newVersionElements.isNullOrEmpty()) {
-            onVersionNotDetectable()
-            return
-        }
-
-        if (currentVersionElements.isNullOrEmpty()) {
-            // current version scrambled?!
-            onNewVersionDetected(currentVersion, newVersion)
-            return
-        }
-
-        newVersionElements.take(3).forEachIndexed { i, newElem ->
-            val currElem: Int = currentVersionElements.getOrNull(i)
-                ?: return onNewVersionDetected(currentVersion, newVersion)
-
-            (newElem - currElem).let {
-                when {
-                    it > 0 -> return onNewVersionDetected(currentVersion, newVersion)
-                    it < 0 -> return onOlderVersionDetected()
-                    else   -> Unit
-                }
-            }
-        }
         onSameVersionDetected()
     }
 
