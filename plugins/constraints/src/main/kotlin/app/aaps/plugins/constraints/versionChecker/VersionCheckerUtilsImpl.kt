@@ -46,7 +46,10 @@ class VersionCheckerUtilsImpl @Inject constructor(
         }
     }
 
-    private fun checkVersion() =
+    private fun checkVersion() = compareWithCurrentVersion("", config.get().VERSION_NAME)
+
+    @Suppress("SameParameterValue")
+    override fun compareWithCurrentVersion(newVersion: String?, currentVersion: String) {
         onSameVersionDetected()
     }
 

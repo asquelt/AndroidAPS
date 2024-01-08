@@ -173,7 +173,7 @@ class SignatureVerifierPlugin @Inject constructor(
     }
 
     @Throws(IOException::class) private fun downloadRevokedCerts(): String {
-        return ''
+        return ""
     }
 
     @Throws(IOException::class)

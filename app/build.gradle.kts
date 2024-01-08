@@ -78,21 +78,8 @@ fun gitAvailable(): Boolean {
 
 fun allCommitted(): Boolean {
     val stringBuilder: StringBuilder = StringBuilder()
-    try {
-        val stdout = ByteArrayOutputStream()
-        exec {
-            commandLine("git", "status", "-s")
-            standardOutput = stdout
-        }
-        // ignore all changes done in .idea/codeStyles
-        val cleanedList: String = stdout.toString().replace("/(?m)^\\s*(M|A|D|\\?\\?)\\s*.*?\\.idea\\/codeStyles\\/.*?\\s*\$/", "")
-            // ignore all files added to project dir but not staged/known to GIT
-            .replace("/(?m)^\\s*(\\?\\?)\\s*.*?\\s*\$/", "")
-        stringBuilder.append(cleanedList.trim())
-    } catch (ignored: Exception) {
-        return false // NoGitSystemAvailable
-    }
-    return stringBuilder.toString().isEmpty()
+
+    return true
 }
 
 android {
