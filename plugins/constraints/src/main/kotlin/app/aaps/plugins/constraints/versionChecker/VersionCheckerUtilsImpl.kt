@@ -68,32 +68,6 @@ class VersionCheckerUtilsImpl @Inject constructor(
         }
 
     fun evaluateVersion(newVersion: String?, currentVersion: String): VersionResult {
-
-        val newVersionElements = newVersion.toNumberList()
-        val currentVersionElements = currentVersion.toNumberList()
-
-        aapsLogger.debug(LTag.CORE, "Compare versions: $currentVersion $currentVersionElements, $newVersion $newVersionElements")
-        if (newVersionElements.isNullOrEmpty()) {
-            return VersionResult.NOT_DETECTABLE
-        }
-
-        if (currentVersionElements.isNullOrEmpty()) {
-            // current version scrambled?!
-            return VersionResult.NEWER_VERSION_AVAILABLE
-        }
-
-        newVersionElements.take(3).forEachIndexed { i, newElem ->
-            val currElem: Int = currentVersionElements.getOrNull(i)
-                ?: return VersionResult.NEWER_VERSION_AVAILABLE
-
-            (newElem - currElem).let {
-                when {
-                    it > 0 -> return VersionResult.NEWER_VERSION_AVAILABLE
-                    it < 0 -> return VersionResult.OLDER_VERSION
-                    else   -> Unit
-                }
-            }
-        }
         return VersionResult.SAME_VERSION
     }
 

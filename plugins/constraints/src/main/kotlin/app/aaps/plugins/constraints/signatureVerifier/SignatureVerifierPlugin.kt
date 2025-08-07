@@ -56,27 +56,16 @@ class SignatureVerifierPlugin @Inject constructor(
 
     private var handler: Handler? = null
 
-    private val REVOKED_CERTS_URL = "https://raw.githubusercontent.com/nightscout/AndroidAPS/master/app/src/main/assets/revoked_certs.txt"
+    private val REVOKED_CERTS_URL = ""
     private val UPDATE_INTERVAL = TimeUnit.DAYS.toMillis(1)
 
     private val lock: Any = arrayOfNulls<Any>(0)
     private var revokedCertsFile: File? = null
     private var revokedCerts: List<ByteArray>? = null
     override fun onStart() {
+        handler?.removeCallbacksAndMessages(null)
+        handler = null
         super.onStart()
-        handler = Handler(HandlerThread(this::class.simpleName + "Handler").also { it.start() }.looper)
-        revokedCertsFile = File(context.filesDir, "revoked_certs.txt")
-        handler?.post {
-            loadLocalRevokedCerts()
-            if (shouldDownloadCerts()) {
-                try {
-                    downloadAndSaveRevokedCerts()
-                } catch (e: IOException) {
-                    aapsLogger.error("Could not download revoked certs", e)
-                }
-            }
-            if (hasIllegalSignature()) showNotification()
-        }
     }
 
     override fun onStop() {
@@ -86,19 +75,7 @@ class SignatureVerifierPlugin @Inject constructor(
     }
 
     override fun isLoopInvocationAllowed(value: Constraint<Boolean>): Constraint<Boolean> {
-        if (hasIllegalSignature()) {
-            showNotification()
-            value.set(false)
-        }
-        if (shouldDownloadCerts()) {
-            handler?.post {
-                try {
-                    downloadAndSaveRevokedCerts()
-                } catch (e: IOException) {
-                    aapsLogger.error("Could not download revoked certs", e)
-                }
-            }
-        }
+        value.set(true)
         return value
     }
 
