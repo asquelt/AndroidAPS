@@ -120,7 +120,7 @@
     <string name="short_fat">Tł</string>
     <string name="category">Kategoria</string>
     <string name="subcategory">Podkategoria</string>
-    <string name="calculator_label">Kalkulator</string>
+    <string name="calculator_label">Oblicz</string>
     <!-- Theme switcher dark and light mode-->
     <string name="theme_switcher_summary">Wybierz ciemny, jasny lub użyj ten sam motyw co w systemie</string>
     <string name="app_color_scheme">Motyw kolorów</string>

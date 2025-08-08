@@ -62,7 +62,7 @@
     <string name="objectives">Zadania</string>
     <string name="please_wait">Proszę czekać…</string>
     <string name="stop">Stop</string>
-    <string name="carbs">Węglowodany</string>
+    <string name="carbs">Węgle</string>
     <string name="invalid_profile">Nieprawidłowy profil!</string>
     <string name="no_profile_set">NIE USTAWIONO PROFILU</string>
     <string name="active"><![CDATA[<Aktywny>]]></string>
@@ -284,7 +284,7 @@
     <string name="uel_bolus_advisor">KALKULATOR BOLUSA</string>
     <string name="uel_extended_bolus">BOLUS PRZEDŁUŻONY</string>
     <string name="uel_superbolus_tbr">SUPERBOLUS TBR</string>
-    <string name="uel_carbs">WĘGLOWODANY</string>
+    <string name="uel_carbs">WĘGLE</string>
     <string name="uel_extended_carbs">PRZEDŁUŻONE WĘGLOWODANY</string>
     <string name="uel_temp_basal">BAZA TYMCZASOWA</string>
     <string name="uel_tt">CEL TYMCZASOWY</string>
@@ -390,7 +390,7 @@
     <string name="basal_value">Wartość bazy</string>
     <!-- Command Queue + readStatus reasons -->
     <string name="bolus_u_min">BOLUS %1$.2f U</string>
-    <string name="carbs_g">WĘGLOW. %1$d g</string>
+    <string name="carbs_g">WĘGLE %1$d g</string>
     <string name="extended_bolus_u_min">BOLUS PRZEDŁ. %1$.2f U %2$d min</string>
     <string name="load_events">WCZYTYWANIE ZDARZEŃ</string>
     <string name="clear_alarms">WYCZYŚĆ ALARMY</string>
